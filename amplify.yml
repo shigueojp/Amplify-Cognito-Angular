@@ -7,7 +7,7 @@ frontend:
         ["npm install", "sh ./headless_init_env.sh", "npm run-script build"]
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    baseDirectory: dist/poc/
+    baseDirectory: dist/POC/
     files:
       - "**/*"
   cache:
