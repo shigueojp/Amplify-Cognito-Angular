@@ -8,7 +8,11 @@ AWSCLOUDFORMATIONCONFIG="{\
 \"profileName\":\"default\"\
 }"
 AMPLIFY="{\
+<<<<<<< HEAD
 \"envName\":\"prod\"\
+=======
+\"envName\":\"test\"\
+>>>>>>> test
 }"
 PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
