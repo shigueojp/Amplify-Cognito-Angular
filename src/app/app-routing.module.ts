@@ -6,13 +6,14 @@ import { UnauthGuard } from './services/auth/unauth.guard';
 import { AuthGuard } from './services/auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: UserAuthenticationComponent, canActivate: [UnauthGuard] },
+  { path: 'login', component: UserAuthenticationComponent, canActivate: [UnauthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

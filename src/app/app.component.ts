@@ -11,13 +11,11 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'POC';
   constructor(public amplify: AmplifyService, public router: Router) {
-    amplify.auth().currentAuthenticatedUser().then(console.log)
   }
 
   logout() {
     Auth.signOut()
       .then(data => {
-        console.log(data);
         console.log("You are successfully logged out");
         this.router.navigate(["/login"]);
       })
