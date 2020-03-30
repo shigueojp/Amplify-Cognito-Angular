@@ -36,6 +36,11 @@
             "StackName": "amplify-amplifycognitoangula-dev-155040",
             "StackId": "arn:aws:cloudformation:us-east-1:727044573396:stack/amplify-amplifycognitoangula-dev-155040/320365a0-71ee-11ea-88e9-12c9c271ca70",
             "AmplifyAppId": "d1dn9ah8wz4a7k"
+        },
+        "categories": {
+            "auth": {
+                "amplifycognitoangula333e736e": {}
+            }
         }
     }
 }
