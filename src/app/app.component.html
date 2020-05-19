@@ -1,0 +1,23 @@
+<!-- nav -->
+<header>
+    <nav class="navbar" style="background-color: #272C3A;">
+        <!-- header nav -->
+        <div class="navbar-brand">
+            <a href="/login" class="navbar-item">
+                <img src="../assets/img/logo_aws.svg">
+            </a>
+        </div>
+        <h2 style="color: white;">Amplify Angular</h2>
+        <div class="navbar-nav" style="background-color: orange;">
+            <button style="border-color: orange;background-color: orange; color: rgb(73, 82, 95)"
+                class="btn btn-primary" (click)="logout()">Logout</button>
+        </div>
+    </nav>
+</header>
+
+<!-- main app container -->
+<div class="container-fluid" style="background-color: #3b4550; height:100vh;">
+    <div class="text-center pt-5">
+        <router-outlet></router-outlet>
+    </div>
+</div>

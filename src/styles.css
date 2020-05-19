@@ -1,0 +1,6 @@
+@import "~@aws-amplify/ui/src/Theme.css";
+@import "~@aws-amplify/ui/src/Angular.css";/* You can add global styles to this file, and also import other style files */
+
+h2, p, label {
+    color: white
+}

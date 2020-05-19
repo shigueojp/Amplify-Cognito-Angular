@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  parameter-store:
+    ACCESS_KEY: "access-key-amplify-poc-test"
+    SECRET_KEY: "secret-key-amplify-poc-test"
+    ENV: "amplify_ENV_test"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - npm install
+  build:
+    commands:
+      - echo Build started...
+      - aws configure set aws_access_key_id $ACCESS_KEY
+      - aws configure set aws_secret_access_key $SECRET_KEY
+      - aws configure set default.region $AWS_REGION
+      - sh ./amplifyPush.sh -e $ENV
+      - amplify publish
+      - echo Build finished on `date`
+artifacts:
+  files:
+    - "**/*"
