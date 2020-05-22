@@ -1,7 +1,3 @@
-##Nao mudar o nome do lambda, verificar isso#
-##Aws Configure##
-
-
 # Amplify Cross Account Using CodePipeline
  
 This project was generated with:
