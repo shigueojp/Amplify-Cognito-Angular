@@ -21,12 +21,15 @@ export class StorageComponent {
     email: any;
     route: Router;
     isUpdated: boolean = false;
+    isLoading: boolean;
+    fileToUpload: File;
+
     constructor(private amplifyService: AmplifyService, route: Router) {
         this.amplifyService = amplifyService
         this.route = route
     }
 
-    fileToUpload: File;
+
     handleFileInput(files: FileList) {
         this.fileToUpload = files.item(0);
         Storage.put('test.pdf', this.fileToUpload, { level: 'private' })
@@ -35,6 +38,7 @@ export class StorageComponent {
     }
 
     ngOnInit() {
+        this.isLoading = true;
         this.showPhoto = false;
         Auth.currentAuthenticatedUser({
             bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
@@ -45,6 +49,7 @@ export class StorageComponent {
             this.email = user.attributes.email;
             let result: any = await Storage.get(`${this.userId}.json`, { level: 'private', download: true });
             if (!result) {
+                this.isLoading = false;
                 this.userCreated = false;
                 this.user = new User(
                     ``,
@@ -55,6 +60,7 @@ export class StorageComponent {
                     ``
                 )
             } else {
+                this.isLoading = false;
                 result = result.Body;
                 this.userCreated = true;
                 this.showPhoto = !!result.image;

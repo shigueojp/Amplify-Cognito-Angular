@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'login', component: UserAuthenticationComponent, canActivate: [UnauthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'storage', component: StorageComponent, canActivate: [AuthGuard] },
+  // { path: 'storage', component: StorageComponent, canActivate: [AuthGuard], resolve: { data: StorageResolverService } },
   { path: '**', redirectTo: 'login' }
 ];
 @NgModule({

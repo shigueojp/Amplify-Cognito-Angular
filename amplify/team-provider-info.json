@@ -1,1 +1,52 @@
-{}
+{
+    "develop": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-amplifycognitoangula-develop-143830-authRole",
+            "UnauthRoleArn": "arn:aws:iam::727044573396:role/amplify-amplifycognitoangula-develop-143830-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::727044573396:role/amplify-amplifycognitoangula-develop-143830-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-amplifycognitoangula-develop-143830-deployment",
+            "UnauthRoleName": "amplify-amplifycognitoangula-develop-143830-unauthRole",
+            "StackName": "amplify-amplifycognitoangula-develop-143830",
+            "StackId": "arn:aws:cloudformation:us-east-1:727044573396:stack/amplify-amplifycognitoangula-develop-143830/90fd5af0-9540-11ea-8984-0a78092beb51",
+            "AmplifyAppId": "djt0m686s1pxl"
+        },
+        "categories": {
+            "function": {
+                "amplifycognitoangula5274700c5274700cCustomMessage": {
+                    "REDIRECTURL": "http://yourwebsite.com",
+                    "EMAILSUBJECT": "Confirm your email address",
+                    "EMAILMESSAGE": "Please confirm your email address. This helps keep your account secure by making sure important messages go to the right address."
+                }
+            },
+            "auth": {
+                "amplifycognitoangula5274700c5274700c": {}
+            }
+        }
+    },
+    "crossacc": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-amplifycognitoangula-crossacc-140617-authRole",
+            "UnauthRoleArn": "arn:aws:iam::183867474463:role/amplify-amplifycognitoangula-crossacc-140617-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::183867474463:role/amplify-amplifycognitoangula-crossacc-140617-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-amplifycognitoangula-crossacc-140617-deployment",
+            "UnauthRoleName": "amplify-amplifycognitoangula-crossacc-140617-unauthRole",
+            "StackName": "amplify-amplifycognitoangula-crossacc-140617",
+            "StackId": "arn:aws:cloudformation:us-east-1:183867474463:stack/amplify-amplifycognitoangula-crossacc-140617/0f659680-99f3-11ea-9255-127e1ad2bd25",
+            "AmplifyAppId": "d2u5u9nil686rn"
+        },
+        "categories": {
+            "auth": {
+                "amplifycognitoangula5274700c5274700c": {}
+            },
+            "function": {
+                "amplifycognitoangula5274700c5274700cCustomMessage": {
+                    "REDIRECTURL": "http://google.com",
+                    "EMAILSUBJECT": "Confirm your email address",
+                    "EMAILMESSAGE": "Please confirm your email address. This helps keep your account secure by making sure important messages go to the right address."
+                }
+            }
+        }
+    }
+}

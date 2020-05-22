@@ -1,8 +1,12 @@
+##Nao mudar o nome do lambda, verificar isso#
+##Aws Configure##
+
+
 # Amplify Cross Account Using CodePipeline
  
 This project was generated with:
  - [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
- - [Amplify CLI](https://github.com/aws-amplify/amplify-cli) version 4.18.0.
+ - [Amplify CLI](https://github.com/aws-amplify/amplify-cli) version 4.20.0.
 
 The frontend is using Angular with amplify angular UI and themes. 
 
@@ -25,12 +29,21 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 - Install [Node.JS](https://nodejs.org/en/download/).
 - Install [NPM](https://www.npmjs.com/get-npm).
 - Install [Amplify CLI](https://docs.amplify.aws/cli/start/install).
-- Install [AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html) (If using SSM Parameter Store via CLI).
-- Install [Angular CLI](https://angular.io/cli).
+- Install [AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html).
 
 2. Fork|clone this repository.
     - For just development server, clone it.
     - For the CI/CD process, fork it.
+
+
+## Setup AWS Profile
+
+Create 2 IAM Users - one for developer AWS Account and another for Production AWS Account.
+
+1. Run `amplify configure`.
+2. Once you’re signed in, Amplify CLI will ask you to create an IAM user.
+3. Create a user with AdministratorAccess to your account to provision AWS resources for you like AppSync, Cognito etc.
+4. Once the user is created, Amplify CLI will ask you to provide the accessKeyId and the secretAccessKey to connect Amplify CLI with your newly created IAM user.
 
 ## Diagram - Amplify Environment
 ![Amplify Environment](img/AmplifyEnvironment.png)
@@ -47,47 +60,25 @@ In the next steps, we are going to create all the amplify resources from the dia
     - In this example, `awsvscommit` profile references to Developer Account.
 
 4. Run `amplify add auth` to add auth service. In order to use custom lambda trigger with cognito, follow the steps below:
-    - Manual Configuration.
-    - User Sign-Up & Sign-In only (Best used with a cloud API only).
-    - Provide a friendly name for your resource OR use the default.
-    - Provide a friendly name for your user pool OR use the default.
-    - Define how do you want users to sign in - (I choose `email`).
-    - Define if you want User Pool Groups - (I choose `No`).
-    - Define if you want add an admin queries API - (I choose `No`).
-    - Define if you MFA - (I choose `OFF`).
-    - Define if you want user registration/forgot password via SMS or email - (I choose `email`).
-    - Specify an email verification subject - (I choose `default`).
-    - Specify an email verification message - (I choose `default`).
-    - Define if you want override the default password policy - (I choose `No`).
-    - Define what attributes are required to signing up - (I choose `email`).
-    - Specify the app's refresh token expiration period - (I choose `default`).
-    - Define if you want to override the default password policy for this User Pool? - (I choose `No`).
-    - Choose `Email Verification Link with Redirect` for confirm user on clicking the url.
-    - Define if you want to use an OAuth flow - (I choose `No`).
-    - Configure a Lambda Trigger for Cognito - (Answer `Y`).
-    - Choose `Custom Message` option and Press `Space` and `Enter`.
-    - Choose `Send Account Confirmation Link With Redirect`. 
-    - Enter your URL for your website.
-    - Enter the subject for your custom account confirmation email.
-    - Enter the body text for your custom account confirmation email.
-    - Define if you want to edit the lambda function - (I choose `No`).
     ![Amplify02](img/amplify02.png)
 
 5. Run `amplify add storage` to add s3 storage.
+![Amplify03](img/amplify03.png)
     - Choose `Content (Images, audio, video, etc.)`.
     - Provide a friendly name for your resource.
     - Provide a bucket name for your resource.
     - Grant permissions for your bucket.
     - Define if you want yo use lamda trigger for S3.
-    ![Amplify03](img/amplify03.png)
+    
 
 6. Run `amplify add hosting` to add hosting.
+![Amplify04](img/amplify04.png)
     - Choose `Amazon CloudFront and S3`.
     - Choose `DEV (S3 only with HTTP)`.
     - Create a hosting bucket name.
     - Choose the index location file of your app.
     - Choose the error location file of your app.
-    ![Amplify04](img/amplify04.png)
+    
 
 
 7. Run `amplify status` to see all the amplify resources status.
@@ -95,7 +86,7 @@ In the next steps, we are going to create all the amplify resources from the dia
 
 8. Run `amplify push` to push all the resources to the cloud.
 
-9. Go to lambda service in AWS Console, choose the lambda with suffix name `CustomMessage`.
+9.  Go to lambda service in AWS Console, choose the lambda with suffix name `CustomMessage`.
     - Change lambda CustomMessage handler name to `verification-link.handler` and save it.
     ![Amplify10](img/amplify10.png)
 
@@ -424,8 +415,16 @@ For some reason, you changed amplify configuration and want to return to the sam
 
 ****
 
+
+##Cleaning Up 
+
+1. Run `amplify delete`
+
+###Destroy The Service###
+
 ## Acknowledgments
 
+- [AWS Profile](https://docs.amplify.aws/start/getting-started/installation/q/integration/angular#option-1-watch-the-video-guide)
 - [ECR with CodeBuild](https://docs.aws.amazon.com/codebuild/latest/userguide/sample-ecr.html)
 - [Build specification reference for CodeBuild](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
 - [Amplify UI Components](https://docs.amplify.aws/ui/q/framework/angular)

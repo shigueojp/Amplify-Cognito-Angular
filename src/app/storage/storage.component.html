@@ -9,13 +9,17 @@
         </form>
     </div>
 </div> -->
+<div class="spinner-border" role="status" *ngIf="isLoading">
+    <span class="sr-only">Loading...</span>
+</div>
 
-<amplify-photo-picker *ngIf="!showPhoto" path="image" [storageOptions]="{'level': 'private'}"
+
+<amplify-photo-picker *ngIf="!showPhoto && !isLoading" path="image" [storageOptions]="{'level': 'private'}"
     (uploaded)="onImageUploaded($event)">
 </amplify-photo-picker>
 
 
-<div class="form-group d-flex justify-content-center file-upload pt-5">
+<div class="form-group d-flex justify-content-center file-upload pt-5" *ngIf="!isLoading">
     <div class=" col-sm-6" *ngIf="showPhoto">
         <div class="md-form mt-0">
             <amplify-s3-image [path]="user.imageUrl" [options]="{'level': 'private'}" *ngIf="showPhoto">
