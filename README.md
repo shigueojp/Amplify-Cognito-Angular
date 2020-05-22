@@ -357,7 +357,7 @@ The pipeline should have two sources.
 ![Amplify45](img/amplify45.png)
 
 
-## Setup CloudFront for production environment
+## Setup CloudFront for Production Environment
 
 1. In your AWS Production Account, open Cloudfront Service and create `Web Distribution`.
 2. Point the `Origin Domain Name` to your s3 hosting bucket.
@@ -414,7 +414,7 @@ For some reason, you changed amplify configuration and want to return to the sam
 ****
 
 
-## Cleaning Up all your resources
+## Cleaning Up all Your Resources
 
 1. Run `amplify delete` for deleting all amplify environment
 2. Access Amplify Console and delete the project.
