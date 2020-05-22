@@ -26,10 +26,10 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 ## What to do first to run this application
 
 1. Install all the necessary tools:
-- Install [Node.JS](https://nodejs.org/en/download/).
-- Install [NPM](https://www.npmjs.com/get-npm).
-- Install [Amplify CLI](https://docs.amplify.aws/cli/start/install).
-- Install [AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html).
+   - Install [Node.JS](https://nodejs.org/en/download/).
+   - Install [NPM](https://www.npmjs.com/get-npm).
+   - Install [Amplify CLI](https://docs.amplify.aws/cli/start/install).
+   - Install [AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html).
 
 2. Fork|clone this repository.
     - For just development server, clone it.
@@ -42,7 +42,7 @@ Create 2 IAM Users - one for developer AWS Account and another for Production AW
 
 1. Run `amplify configure`.
 2. Once you’re signed in, Amplify CLI will ask you to create an IAM user.
-3. Create a user with AdministratorAccess to your account to provision AWS resources for you like AppSync, Cognito etc.
+3. Create a user with `AdministratorAccess` to your account to provision AWS resources for you like AppSync, Cognito etc.
 4. Once the user is created, Amplify CLI will ask you to provide the accessKeyId and the secretAccessKey to connect Amplify CLI with your newly created IAM user.
 
 ## Diagram - Amplify Environment
@@ -78,8 +78,6 @@ In the next steps, we are going to create all the amplify resources from the dia
     - Create a hosting bucket name.
     - Choose the index location file of your app.
     - Choose the error location file of your app.
-    
-
 
 7. Run `amplify status` to see all the amplify resources status.
     ![Amplify05](img/amplify05.png)
@@ -372,7 +370,7 @@ The pipeline should have two sources.
 
 Setup your bucket policy on your s3 bucket hosting.
 
-1.Access your s3 bucket and edit bucket policy for:
+1. Access your s3 bucket and edit bucket policy for:
 ```
 {
     "Version": "2008-10-17",
@@ -397,7 +395,7 @@ Setup your bucket policy on your s3 bucket hosting.
 }
 ```
 
-Open your cloudfront DNS at your browser!
+2. Open your cloudfront DNS at your browser!
 
 ## Issues
 
@@ -416,9 +414,13 @@ For some reason, you changed amplify configuration and want to return to the sam
 ****
 
 
-##Cleaning Up 
+## Cleaning Up all your resources
 
-1. Run `amplify delete`
+1. Run `amplify delete` for deleting all amplify environment
+2. Access Amplify Console and delete the project.
+3. Delete all the s3 buckets related to amplify manually.
+4. Delete all the codebuild projects.
+5. Disable and delete the CloudFront Distribution.
 
 ###Destroy The Service###
 
