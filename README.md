@@ -34,12 +34,16 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 
 ## Setup AWS Profile
 
-Create 2 IAM Users - one for developer AWS Account and another for Production AWS Account.
+Create two IAM Users:
+    One for developer AWS Account
+    Another for Production AWS Account.
 
 1. Run `amplify configure`.
 2. Once you’re signed in, Amplify CLI will ask you to create an IAM user.
 3. Create a user with `AdministratorAccess` to your account to provision AWS resources for you like AppSync, Cognito etc.
 4. Once the user is created, Amplify CLI will ask you to provide the accessKeyId and the secretAccessKey to connect Amplify CLI with your newly created IAM user.
+
+Please, if you need more information, follow this [link](https://docs.amplify.aws/start/getting-started/installation/q/integration/angular#option-1-watch-the-video-guide) 
 
 ## Diagram - Amplify Environment
 ![Amplify Environment](img/AmplifyEnvironment.png)
