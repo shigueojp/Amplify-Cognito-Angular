@@ -250,7 +250,6 @@ If you change any of the **buildspec-files**, commit and push.
 2. Store **Production AWS Account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
     1. To get your AWS Production Account ID via AWS CLI:
        1. Run `aws --profile amplify-for-prod sts get-caller-identity`
-   
 ![AccountID](img/stsgetAccountID.png)
 
     2. Run command using AWS CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
