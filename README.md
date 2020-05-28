@@ -248,7 +248,8 @@ If you change any of the **buildspec-files**, commit and push.
 
 1. Sign in with **Developer/Test** AWS Account.
 2. Store **Production AWS Account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
-    1. Via AWS CLI, to verify you AWS Production Account ID: Run `aws --profile amplify-for-prod sts get-caller-identity`
+    1. To get your AWS Production Account ID via AWS CLI:
+       1. Run `aws --profile amplify-for-prod sts get-caller-identity`
    
 ![AccountID](img/stsgetAccountID.png)
 
