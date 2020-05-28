@@ -247,12 +247,14 @@ If you change any of the **buildspec-files**, commit and push.
 **For production environment:**
 
 1. Sign in with **Developer/Test** AWS Account.
-2. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
+2. Store **Production AWS Account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
     1. Via AWS CLI, to verify you AWS Production Account ID: Run `aws --profile amplify-for-prod sts get-caller-identity`
+   
 ![AccountID](img/stsgetAccountID.png)
+
     2. Run command using AWS CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
     - Replace **YourAWSAccountID** for your AWS Account ID.
-3. Edit buildspec-prod.yml | env > parameter-store with your keys created.
+1. Edit buildspec-prod.yml | env > parameter-store with your keys created.
 ```
 env:
   parameter-store:
