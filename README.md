@@ -38,20 +38,19 @@ Create **two** IAM Users:
 
 > Another simulating Production AWS Account.
 
-
-1. Run in your terminal `amplify configure`.
-2. Once you’re signed in, go to terminal and `Press Enter` and follow the commands:
+1. In your terminal, run `amplify configure`.
+2. Sign in to your **dev/test** AWS account, go to terminal and `Press Enter` and follow the commands:
    1. Specify the AWS region.
    2. Specify the username of IAM user.
 3. Click in the link and register a new IAM user.
 4. Create a user with **AdministratorAccess** to your account to provision AWS resources for you like AppSync, Cognito etc.
 5. Once the user is created, Amplify CLI requests you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
-6. Specify AWS Profile name for **amplify-for-dev-test**.
+6. Specify AWS Profile name to **amplify-for-dev-test**.
 <img src="img/amplify_configure.png">
 7. Sign out from AWS Console.
 
-1. Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
-2. Specify AWS Profile name **amplify-for-prod**.
+1. Sign in with **production** AWS Account. Repeat the process again to create a new IAM user. 
+2. Specify AWS Profile name to **amplify-for-prod**.
 
 ![Amplify Configure](img/amplify_configure_prod.png)
 
