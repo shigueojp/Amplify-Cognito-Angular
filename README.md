@@ -19,49 +19,71 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 
 ![Alt Text](img/AmplifyBigPicture.png)
 
-## What to do first to run this application
+## Before you begin to run this application
 
 1. Install all the necessary tools:
    - Install [Node.JS](https://nodejs.org/en/download/).
    - Install [NPM](https://www.npmjs.com/get-npm).
    - Install [Amplify CLI](https://docs.amplify.aws/cli/start/install).
-   - Install [AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html).
+   - Install [AWS CLI V2](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-install.html).
 
 2. Fork|clone this repository.
     - For just development server, clone it.
     - For the CI/CD process, fork it.
 
-
 ## Setup AWS Profile
 
-Create two IAM Users:
-    One for developer AWS Account
-    Another for Production AWS Account.
+Create **two** IAM Users:
+    One simulating Developer/Test AWS Account.
+    Another simulating Production AWS Account.
 
-1. Run `amplify configure`.
-2. Once you’re signed in, Amplify CLI will ask you to create an IAM user.
-3. Create a user with `AdministratorAccess` to your account to provision AWS resources for you like AppSync, Cognito etc.
-4. Once the user is created, Amplify CLI will ask you to provide the accessKeyId and the secretAccessKey to connect Amplify CLI with your newly created IAM user.
 
-Please, if you need more information, follow this [link](https://docs.amplify.aws/start/getting-started/installation/q/integration/angular#option-1-watch-the-video-guide) 
+1. Run in your terminal `amplify configure`.
+2. Once you’re signed in, go to terminal and `Press Enter` and follow the commands:
+   1. Specify the AWS region.
+   2. Specify the username of IAM user.
+3. Click in the link and register a new IAM user.
+4. Create a user with **AdministratorAccess** to your account to provision AWS resources for you like AppSync, Cognito etc.
+5. Once the user is created, Amplify CLI will ask you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
+6. Specify AWS Profile name for **amplify-for-dev-test**.
+![Amplify Configure](img/amplify_configure.png)
+7. Sign out from AWS Console.
+   
+Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
+
+1. Specify AWS Profile name **amplify-for-prod**.
+![Amplify Configure](img/amplify_configure_prod.png)
+
+If you need more information, follow the [Amplify Documentation](https://docs.amplify.aws/start/getting-started/installation/q/integration/angular#option-1-watch-the-video-guide). 
+
+
+UNTIL HERE DONE
+UNTIL HERE DONE
+UNTIL HERE DONE
+UNTIL HERE DONE
+
+UNTIL HERE DONEUNTIL HERE DONEUNTIL HERE DONEv
+UNTIL HERE DONE
+
+
 
 ## Diagram - Amplify Environment
 ![Amplify Environment](img/AmplifyEnvironment.png)
 
-In the next steps, we are going to create all the amplify resources from the diagram above for each branch.
+In the next steps, we are going to create all the amplify resources from the diagram above for each environment.
+
+> :warning: Not recommended to label any service with sufix(dev, test, prod). Amplify already create sufix tags for each service added.!
 
 ### Creating Amplify Environment - Development
 
 1. Run `npm install` to install all the packages needed.
 2. Run `git checkout -b dev` to create the dev branch.
-3. Run `amplify init` and specify a name for the new Amplify Dev Environment.
-    - Amplify is going to request for an AWS Profile. (Choose the dev AWS profile or create a new one).
+3. Run `amplify init` and follow the instructions according to your environment.
+    ![AmplifyInit](img/amplifyInit.png)
+    - Amplify requests for an AWS Profile. (Answer Y, choose the dev/test AWS profile - **amplify-for-dev-test**).
     ![Amplify00](img/amplify00.png)
-    - In this example, `awsvscommit` profile references to Developer Account.
-
-4. Run `amplify add auth` to add auth service. In order to use custom lambda trigger with cognito, follow the steps below:
+4. Run `amplify add auth` to add Cognito. In order to use custom lambda trigger with cognito, follow the steps below:
     ![Amplify02](img/amplify02.png)
-
 5. Run `amplify add storage` to add s3 storage.
 ![Amplify03](img/amplify03.png)
     - Choose `Content (Images, audio, video, etc.)`.
@@ -69,8 +91,6 @@ In the next steps, we are going to create all the amplify resources from the dia
     - Provide a bucket name for your resource.
     - Grant permissions for your bucket.
     - Define if you want yo use lamda trigger for S3.
-    
-
 6. Run `amplify add hosting` to add hosting.
 ![Amplify04](img/amplify04.png)
     - Choose `Amazon CloudFront and S3`.
@@ -78,77 +98,75 @@ In the next steps, we are going to create all the amplify resources from the dia
     - Create a hosting bucket name.
     - Choose the index location file of your app.
     - Choose the error location file of your app.
-
 7. Run `amplify status` to see all the amplify resources status.
     ![Amplify05](img/amplify05.png)
-
-8. Run `amplify push` to push all the resources to the cloud.
-
-9.  Go to lambda service in AWS Console, choose the lambda with suffix name `CustomMessage`.
-    - Change lambda CustomMessage handler name to `verification-link.handler` and save it.
-    ![Amplify10](img/amplify10.png)
-
-10. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-If it runs OK, the screen below should appear in your browser:
+8. Run `amplify push` to push all the resources to the cloud through cloudformation.
+    - CloudFormation creates one root stack and four nested stacks:
+![Cloudformation](img/cloudformation_template.png)
+    - Creation of S3 as Storage
+    - Creation of S3 as Hosting
+    - Cognito User Pool
+    - Lambda Trigger
+9.  Run `amplify publish` to create the angular build and push to s3.
+10. A link is going to the published. Click on it.
+![AmplifyPublish](img/amplifyPublish.png)
+11. The screen below should appear in your browser:
 ![Amplify15](img/amplify15.png)
-
-11. Create a user, using the angular UI created by Amplify.
+12. Sign up a new user.
     - Check your email and confirm by clicking the url created by lambda.
     ![Amplify25](img/amplify25.png)
     - Make sure your bucket have the right access.
+13. Sign in.
+
+ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE
 
 ### Creating Amplify Environment - Test 
 
 1. Run `git checkout -b test` to create test branch.
-2. Run `git merge dev` to merge dev branch to test.
-3. Run `amplify init` and use a new environment.
-    - Enter a name of the new amplify environment
-    - Amplify is going to request for an AWS Profile. - (Choose the developer AWS profile or create a new one).
-    - Since it was merged with dev branch, amplify is going just to request:
-        - Configure a Lambda Trigger for Cognito - (Answer `Y`).
-        - Choose `Custom Message` option and press `Space` and `Enter`.
-        - Choose `Send Account Confirmation Link With Redirect`. 
+2. Run `git merge dev` to merge **dev** branch to test.
+3. Run `amplify init`.
+    - Ask for use a existing environment. (Answer **N**)
+    - Enter a name of the new amplify environment - (I choose **test**).
+    - Amplify requests for an AWS Profile. - (Answer **Y**, choose the dev/test AWS profile - **amplify-for-dev-test**).
+    - Since it was merged with dev branch, amplify requests only:
+        - Configure a Lambda Trigger for Cognito - (Answer **Y**).
+        - Choose **Custom Message** option and press **Space** and **Enter**.
+        - Choose **Send Account Confirmation Link With Redirect**. 
         - Enter your URL for your website.
         - Enter the subject for your custom account confirmation email.
         - Enter the body text for your custom account confirmation email.
 4. Run `amplify push` to push all the resources to the cloud.
-5. Go to lambda service in AWS Console, choose the lambda with suffix name `CustomMessage`.
-    - Change lambda CustomMessage handler name to `verification-link.handler` and save it.
-6. Run `amplify publish` to create the angular build and push to s3.
-7. A link is going to the published. Click on it.
+5. Run `amplify publish` to create the angular build and push to s3.
+6. A link is going to the published. Click on it.
     - If it runs with success, the screen below should appear in your browser:
-8. Create a user, using the angular UI created by Amplify.
+![Amplify15](img/amplify15.png)
+7. Sign up a new User.
     - Check your email and confirm by clicking the url created by lambda.
     - Make sure your bucket have the right access.
 
 ### Creating Amplify Environment - Production 
 
-1. Change your branch to master and merge the dev branch.
+1. Change your branch to master and merge the **test** branch.
     - Run `git checkout master`.
     - Run `git merge test`.
-2. Run `amplify init` and use a new environment.
-    - Enter a name of the new amplify environment - (I choose `prod`).
-    - Amplify is going to request for an AWS Profile. - (Choose the Production AWS profile or create a new one).
-        - In this example, `victor-from-dan-account-not-isengard` references to Production Account.
-    - Since it was merged with test branch, amplify is going just to request:
-        - Configure a Lambda Trigger for Cognito - (Answer `Y`).
-        - Choose `Custom Message` option and press `Space` and `Enter`.
-        - Choose `Send Account Confirmation Link With Redirect`. 
+2. Run `amplify init`.
+    - Ask for use a existing environment. (Answer **N**)
+    - Enter a name of the new amplify environment - (I choose **prod**).
+    - Amplify requests for an AWS Profile. - (Answer **Y**, choose the dev/test AWS profile - **amplify-for-prod**).
+![Amplify02](img/amplifyInitProd.png)
+    - Since it was merged with **test** branch, amplify requests only:
+        - Configure a Lambda Trigger for Cognito - (Answer **Y**).
+        - Choose **Custom Message** option and press **Space** and **Enter**.
+        - Choose **Send Account Confirmation Link With Redirect**. 
         - Enter your URL for your website.
         - Enter the subject for your custom account confirmation email.
-        - Enter the body text for your custom account confirmation email.
-        ![Amplify02](img/amplify02.png)
+        - Enter the body text for your custom account confirmation email.     
 3. Run `amplify push` to push all the resources to the cloud.
-4. Go to lambda service in AWS Console, choose the lambda with suffix name `CustomMessage`.
-    - Change lambda CustomMessage handler name to `verification-link.handler` and save it.
-    ![Amplify15](img/amplify10.png)
-5. Run `amplify publish` to create the angular build and push to s3.
-6. A link is going to the published. Click on it.
+4. Run `amplify publish` to create the angular build and push to s3.
+5. A link is going to the published. Click on it.
     - If it runs with success, the screen below should appear in your browser:
     ![Amplify35](img/amplify35.png)
-
-7. Create a user, using the angular UI created by Amplify.
+6. Sign up a new User.
     - Check your email and confirm by clicking the url created by lambda.
     - Make sure your bucket have the right access.
 
@@ -159,10 +177,15 @@ The next steps, it`s about the creation of the pipeline for continuous delivery 
 
 ### Pushing Golden Image to ECR 
 
-1. Create a repository in the ECR.        
-2. Inside the repository, click `view push commands` and follow the guideline.
-3. Use this Dockerfile as reference to build and push your image.
-4. Inside the repository, click `Permissions`, `Edit policy JSON` and add the code below to grant CodeDeploy the right permissions.
+> :warning: Use AWS CLI Latest Version.ˆ for `aws ecr` work as intended.
+
+1. Sign in to AWS Console with your **development** AWS Account.
+2. Access **ECR** Service and Create a repository in the ECR.
+3. Click in the repository created, click **view push commands** and follow the **four** instructions.
+![ECR](img/ecr_guideline.png)
+4. Use this Dockerfile to build and push.
+    - This dockerfile contains all the packages necessary to run the amplify build.
+5. Inside the repository, click **Permissions**, **Edit policy JSON** and add the code below to grant CodeDeploy the right permissions.
 
 ```
 {
@@ -186,29 +209,53 @@ The next steps, it`s about the creation of the pipeline for continuous delivery 
 
 ### Creating SSM Parameter Store Keys/Values
 
+1. Store your Amplify Environment name for development and test and production via AWS CLI Or AWS Console.
+    - You can always check your amplify env name with `amplify env list`
+![AmplifyEnv](img/amplifyEnvList.png)
+    - Using AWS CLI, execute the commands below:
+  ```
+  aws ssm put-parameter --name "amplifyEnvDev" --type "String" --value "dev"
+  aws ssm put-parameter --name "amplifyEnvTest" --type "String" --value "test"
+  aws ssm put-parameter --name "amplifyEnvProd" --type "String" --value "prod"
+  ```
+
 **For developer/test environment:**
 
-1. Store your IAM Access of your amplify profile using SSM Parameter Store via AWS CLI OR AWS Console.
-    - Command using CLI with SecureString: `aws ssm put-parameter --name "someCoolName" --type "SecureString" --value "Password123$"`
-    - Do not forget to use `SecureString` to leverage best security practices.
-2. Store your Amplify Environment name for development.
-    - You can always check your amplify env name with `amplify env list`
 
-3. Edit buildspec-dev.yml | env > parameter-store with your keys created.
+1. Store your Access Key/Secret Key for amplify-for-dev-test into SSM Parameter Store. via AWS CLI Or AWS Console.
+    - Command using CLI: 
+```
+aws ssm put-parameter --name "someAccessKey" --type "SecureString" --value "AccessKey"
+aws ssm put-parameter --name "someSecretKey" --type "SecureString" --value "SecretKey"
+
+```
+    - Do not forget to use `SecureString` to leverage best security practices.
+
+2. Edit buildspec-dev.yml | env > parameter-store with your keys created.
 ```
 env:
   parameter-store:
-    ACCESS_KEY: "someCoolName"
-    SECRET_KEY: "someGreatName"
-    ENV_AMPLIFY: "AmplifyEnvNameForDevExample"
+    ACCESS_KEY: "someAccessKey"
+    SECRET_KEY: "someSecretKey"
+    ENV_AMPLIFY: "amplifyEnvDev"
 ```
 
-4. Edit your buildspec-dev.yml referencing your environment variables from SSM.
+3. Edit buildspec-test.yml | env > parameter-store with your keys created.
+```
+env:
+  parameter-store:
+    ACCESS_KEY: "someAccessKey"
+    SECRET_KEY: "someSecretKey"
+    ENV_AMPLIFY: "amplifyEnvTest"
+```
 
 **For production environment:**
 
-1. Store AWS account ID from your Account in Production Enviroment using SSM Parameter Store via AWS CLI OR AWS Console.
-    - Command using CLI with SecureString: `aws ssm put-parameter --name "someCoolName" --type "SecureString" --value "Password123$"`
+<!-- Access your AWS Production Account > IAM
+    - Check your AWS Account ID at the bottom left -->
+
+1. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
+    - Command using CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "SecureString" --value "727044573399"`
     - Do not forget to use `SecureString` to leverage best security practices.
 2. Store your Amplify Environment name for production.
     - You can always check your amplify env name with `amplify env list`
@@ -217,24 +264,35 @@ env:
 env:
   parameter-store:
     AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
-    ENV: "AmplifyEnvNameForProdExample"
+    ENV: "amplifyEnvProd"
 ```
 
 4. Edit your buildspec-prod.yml referencing your environment variables from SSM.
 
+
+
+TODO 
+//mandar commitar no repositorio
+//merge 
+
 ### Creating build with CodeBuild with ECR 
 
-1. Create three CodeBuild projects using your repository:
-    - Development - Referencing dev branch.
-    - Test - referencing test branch.
-    - Production - Referencing master branch.
+1. Create **three** CodeBuild projects using your repository:
 2. In each environment - Use Custom Image with Linux as `Environment type` and the image created at ECR.
     ![Amplify30](img/amplify30.png)
-3. In buildspec configuration:
-    - Use the buildspec-dev.yml for Amplify Development Environment.
-    - Use the buildspec-test.yml for Amplify Test Environment.
-    - Use the buildspec-prod.yml for Amplify Production Environment.
-4. Grant the right permissions for both CodeBuild roles have access to SSM.
+3. In Source Version, references your branch from git:
+    - Development - Referencing dev branch.
+    - Test - Referencing test branch.
+    - Production - Referencing master branch.
+4. In buildspec configuration:
+    - Use the **buildspec-dev.yml** for Amplify Development Environment.
+    - Use the **buildspec-test.yml** for Amplify Test Environment.
+    - Use the **buildspec-prod.yml** for Amplify Production Environment.
+5. Click `Create Build Project`.
+
+**Grant Permission for each role created by codebuild**
+
+1. Grant the right permissions for both CodeBuild roles have access to SSM.
 
 ```
 {
@@ -253,15 +311,15 @@ env:
 }
 ```
 
-5. Start the **development** build for testing purposes. 
+2. Start the **development** build for testing purposes. 
 
 If it runs with success, now it is time to create the production build.
 
 ### Cross Account Role - Configuring the production build permissions
 
-1. In Production Account via AWS Console.
-    - Create a role with the right permissions to allow amplify create resources.
-2. Grant trust relationship using Dev account ID.
+1. Sign in to Production Account via AWS Console.
+    - Create a IAM role with the right permissions to allow amplify create resources.
+2. Grant trust relationship using AWS Dev Acccount ID.
     - Inside the role created.
     - Click `Trust relationship`.
     - Click `Edit trust relationship`.
@@ -282,7 +340,7 @@ If it runs with success, now it is time to create the production build.
 }
 ```
 
-3. In Developer Account via AWS Console.
+3. In **Developer Account** via AWS Console.
     - Go to your codebuild and access the Production build project.
     - Go to `Build details` and click in the `Service role` link.
     - It`s going to open the IAM role associated with Production Build.
@@ -294,13 +352,17 @@ If it runs with success, now it is time to create the production build.
         {
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::<AccountIdProd>:role/YourNewRoleFromProdAcc"
+            "Resource": "arn:aws:iam::<AccountIdProd>:role/CrossAccountRole"
         }
     ]
 }
 ```
     - Change `<AccountIdProd>` to the AWS account ID from Production User Account.
-    - Change `YourNewRoleFromProdAcc` to the role name created at the beginning of this section.
+    - Change `CrossAccountRole` to the role name created at the beginning of this section.
+
+// TODO
+
+CHANGE THE ROLE NAME FROM build-spec prod.yml
 
 4. Start the **production** build.
 

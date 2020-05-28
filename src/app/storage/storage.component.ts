@@ -48,7 +48,9 @@ export class StorageComponent {
             this.userId = user.attributes.sub;
             this.email = user.attributes.email;
             let result: any = await Storage.get(`${this.userId}.json`, { level: 'private', download: true });
+            console.log(result)
             if (!result) {
+                console.log("A")
                 this.isLoading = false;
                 this.userCreated = false;
                 this.user = new User(
