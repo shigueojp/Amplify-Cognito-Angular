@@ -47,7 +47,7 @@ Create **two** IAM Users:
 5. Once the user is created, Amplify CLI requests you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
 6. Specify AWS Profile name for **amplify-for-dev-test**.
 
-![AmplifyConfigure](img/amplify_configure.png | width=100px])
+![AmplifyConfigure](img/amplify_configure.png | width=100px)
 
 7. Sign out from AWS Console.
    
