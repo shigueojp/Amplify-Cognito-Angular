@@ -35,6 +35,7 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 
 Create **two** IAM Users:
 > One simulating Developer/Test AWS Account.
+
 > Another simulating Production AWS Account.
 
 
