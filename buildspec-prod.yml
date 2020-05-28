@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   parameter-store:
-    AMPLIFY_ACCOUNT_NUMBER_PROD: "arn-amplify-poc-prod"
-    ENV: "envFromCrossAccAmplify"
+    AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
+    ENV: "amplifyEnvProd"
 phases:
   install:
     runtime-versions:

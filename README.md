@@ -221,22 +221,23 @@ The next steps, it`s about the creation of the pipeline for continuous delivery 
 
 **For developer/test environment:**
 
-
-1. Store your Access Key/Secret Key for amplify-for-dev-test into SSM Parameter Store. via AWS CLI Or AWS Console.
+1. Store your Access Key/Secret Key for **amplify-for-dev-test** into SSM Parameter Store via AWS CLI Or AWS Console.
     - Command using CLI: 
 ```
-aws ssm put-parameter --name "someAccessKey" --type "SecureString" --value "AccessKey"
-aws ssm put-parameter --name "someSecretKey" --type "SecureString" --value "SecretKey"
+aws ssm put-parameter --name "access-key-amplify-dev-test" --type "SecureString" --value "YourAccessKey"
+aws ssm put-parameter --name "secret-key-amplify-dev-test" --type "SecureString" --value "YourSecretKey"
 
 ```
+    - Replace **YourAccessKey** for your Access Key.
+    - Replace **YourSecretKey** for your Secret Key.
     - Do not forget to use `SecureString` to leverage best security practices.
 
 2. Edit buildspec-dev.yml | env > parameter-store with your keys created.
 ```
 env:
   parameter-store:
-    ACCESS_KEY: "someAccessKey"
-    SECRET_KEY: "someSecretKey"
+    ACCESS_KEY: "access-key-amplify-dev-test"
+    SECRET_KEY: "secret-key-amplify-dev-test"
     ENV_AMPLIFY: "amplifyEnvDev"
 ```
 
@@ -244,51 +245,50 @@ env:
 ```
 env:
   parameter-store:
-    ACCESS_KEY: "someAccessKey"
-    SECRET_KEY: "someSecretKey"
+    ACCESS_KEY: "access-key-amplify-dev-test"
+    SECRET_KEY: "secret-key-amplify-dev-test"
     ENV_AMPLIFY: "amplifyEnvTest"
 ```
+If you change any of the **buildspec-files**, commit and push. 
 
 **For production environment:**
 
-<!-- Access your AWS Production Account > IAM
-    - Check your AWS Account ID at the bottom left -->
-
-1. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
-    - Command using CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "SecureString" --value "727044573399"`
-    - Do not forget to use `SecureString` to leverage best security practices.
-2. Store your Amplify Environment name for production.
-    - You can always check your amplify env name with `amplify env list`
-3. Edit buildspec-prod.yml | env > parameter-store with your keys created.
+1. Sign in your AWS **Production** Account via AWS Console.
+    - Access **IAM** and save your AWS Account ID at the bottom left.
+2. Sign out and sign in with **Developer/Test** AWS Account.
+3. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
+    - Command using CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
+    - Replace **YourAWSAccountID** for your AWS Account ID.
+4. Edit buildspec-prod.yml | env > parameter-store with your keys created.
 ```
 env:
   parameter-store:
     AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
     ENV: "amplifyEnvProd"
 ```
+5. Edit your buildspec-prod.yml referencing your environment variables from SSM.
 
-4. Edit your buildspec-prod.yml referencing your environment variables from SSM.
-
-
-
-TODO 
-//mandar commitar no repositorio
-//merge 
+If you change any of the **buildspec-files**, commit and push. 
 
 ### Creating build with CodeBuild with ECR 
 
-1. Create **three** CodeBuild projects using your repository:
-2. In each environment - Use Custom Image with Linux as `Environment type` and the image created at ECR.
+1. Sign in your AWS **Dev/Test** Account via AWS Console.
+2. Access **Codebuild** service and create **three** CodeBuild projects using your repository.
+3. In **Source Version**, references your branch from git:
+    - dev - Referencing dev branch.
+    - test - Referencing test branch.
+    - master - Referencing master branch.
+4. In **Environment**: 
+   1. Select **Custom Image** with **Linux** as Environment Type.
+   2. Select **Amazon ECR** as Image registry.
+   3. Select **My ECR account** 
+   4. Select ECR repository created using the latest image.
     ![Amplify30](img/amplify30.png)
-3. In Source Version, references your branch from git:
-    - Development - Referencing dev branch.
-    - Test - Referencing test branch.
-    - Production - Referencing master branch.
-4. In buildspec configuration:
+5. In **buildspec** configuration:
     - Use the **buildspec-dev.yml** for Amplify Development Environment.
     - Use the **buildspec-test.yml** for Amplify Test Environment.
     - Use the **buildspec-prod.yml** for Amplify Production Environment.
-5. Click `Create Build Project`.
+6. Click **Create Build Project**.
 
 **Grant Permission for each role created by codebuild**
 
