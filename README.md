@@ -73,7 +73,7 @@ In the next steps, we are going to create all the amplify resources from the dia
 2. Run `git checkout -b dev` to create the dev branch.
 3. Run `amplify init` and follow the instructions according to your environment.
     ![AmplifyInit](img/amplifyInit.png)
-    - Amplify requests for an AWS Profile. (Answer Y, choose the dev/test AWS profile - **amplify-for-dev-test**).
+4. Amplify requests for an AWS Profile. (Answer Y, choose the dev/test AWS profile - **amplify-for-dev-test**).
     ![Amplify00](img/amplify00.png)
 4. Run `amplify add auth` to add Cognito. In order to use custom lambda trigger with cognito, follow the steps below:
     ![Amplify02](img/amplify02.png)
