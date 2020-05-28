@@ -46,7 +46,7 @@ Create **two** IAM Users:
 4. Create a user with **AdministratorAccess** to your account to provision AWS resources for you like AppSync, Cognito etc.
 5. Once the user is created, Amplify CLI requests you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
 6. Specify AWS Profile name for **amplify-for-dev-test**.
-<img src="img/amplify_configure.png" width="400">
+<img src="img/amplify_configure.png">
 7. Sign out from AWS Console.
    
 Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
