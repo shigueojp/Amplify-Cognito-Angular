@@ -55,7 +55,7 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 **Creating Production AWS Account**
 1. Sign in with **production** AWS Account. Repeat the process again to create a new IAM user. 
 2. Specify AWS Profile name to **amplify-for-prod**.
-    ![Amplify Configure](img/amplify_configure_prod.png)
+- ![Amplify Configure](img/amplify_configure_prod.png)
 
 If you need more information, follow the [Amplify Documentation](https://docs.amplify.aws/start/getting-started/installation/q/integration/angular#option-1-watch-the-video-guide). 
 
