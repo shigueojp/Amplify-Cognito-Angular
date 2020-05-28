@@ -34,8 +34,8 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 ## Setup AWS Profile
 
 Create **two** IAM Users:
-    - One simulating Developer/Test AWS Account.
-    - Another simulating Production AWS Account.
+- One simulating Developer/Test AWS Account.
+- Another simulating Production AWS Account.
 
 
 1. Run in your terminal `amplify configure`.
@@ -49,9 +49,8 @@ Create **two** IAM Users:
 <img src="img/amplify_configure.png">
 7. Sign out from AWS Console.
    
-Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
-
-1. Specify AWS Profile name **amplify-for-prod**.
+1. Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
+2. Specify AWS Profile name **amplify-for-prod**.
 
 ![Amplify Configure](img/amplify_configure_prod.png)
 
