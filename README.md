@@ -48,6 +48,7 @@ Create **two** IAM Users:
 6. Specify AWS Profile name for **amplify-for-dev-test**.
 
 ![AmplifyConfigure](img/amplify_configure.png | width=100px])
+
 7. Sign out from AWS Console.
    
 Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
