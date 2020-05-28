@@ -34,10 +34,10 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 ## Setup AWS Profile
 
 Create **two** IAM Users:
-> One simulating Developer/Test AWS Account.
+    One simulating Developer/Test AWS Account.
+    Another simulating Production AWS Account.
 
-> Another simulating Production AWS Account.
-
+**Developer/Test AWS Account**
 1. In your terminal, run `amplify configure`.
 2. Sign in to your **dev/test** AWS account, go to terminal and `Press Enter` and follow the commands:
    1. Specify the AWS region.
@@ -49,6 +49,7 @@ Create **two** IAM Users:
 <img src="img/amplify_configure.png">
 7. Sign out from AWS Console.
 
+**Production AWS Account**
 1. Sign in with **production** AWS Account. Repeat the process again to create a new IAM user. 
 2. Specify AWS Profile name to **amplify-for-prod**.
 
@@ -61,7 +62,7 @@ If you need more information, follow the [Amplify Documentation](https://docs.am
 
 In the next steps, we are going to create all the amplify resources from the diagram above for each environment.
 
-> :warning: Not recommended to label any service with sufix(dev, test, prod). Amplify already create sufix tags for each service added.!
+> :warning: Not recommended to name any service with sufix(dev, test, prod). Amplify already create sufix tags for each service added.
 
 ### Creating Amplify Environment - Development
 
@@ -397,12 +398,12 @@ The pipeline should have two sources.
 
 ## Setup CloudFront for Production Environment
 
-1. In your AWS Production Account, open Cloudfront Service and create `Web Distribution`.
-2. Point the `Origin Domain Name` to your s3 hosting bucket.
-3. Set `true` to `Restrict Bucket Access`.
-4. Set `Create a New Identity` to `true`.
-5. Set `Yes, Update Bucket Policy` to `Grant Read Permissions on Bucket` and save it.
-6. Go to your cloudfront created and click `Error Pages`, `Create Custom Error Response`.
+1. In your AWS Production Account, open Cloudfront Service and create **Web Distribution**.
+2. Point the **Origin Domain Name** to your s3 hosting bucket.
+3. Set **true** to **Restrict Bucket Access**.
+4. Set **Create a New Identity** to **true**.
+5. Set **Yes, Update Bucket Policy** to **Grant Read Permissions on Bucket** and save it.
+6. Go to your cloudfront created and click **Error Pages**, **Create Custom Error Response**.
 7. Follow the steps as the image below:
 ![Amplify55](img/amplify55.png)
 
