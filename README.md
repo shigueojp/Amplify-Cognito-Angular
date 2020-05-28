@@ -34,8 +34,8 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 ## Setup AWS Profile
 
 Create **two** IAM Users:
-- One simulating Developer/Test AWS Account.
-- Another simulating Production AWS Account.
+> One simulating Developer/Test AWS Account.
+> Another simulating Production AWS Account.
 
 
 1. Run in your terminal `amplify configure`.
@@ -48,7 +48,7 @@ Create **two** IAM Users:
 6. Specify AWS Profile name for **amplify-for-dev-test**.
 <img src="img/amplify_configure.png">
 7. Sign out from AWS Console.
-   
+
 1. Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
 2. Specify AWS Profile name **amplify-for-prod**.
 
@@ -242,22 +242,20 @@ If you change any of the **buildspec-files**, commit and push.
 
 **For production environment:**
 
-1. Sign in your AWS **Production** Account via AWS Console.
-    - Access **IAM** and save your AWS Account ID at the bottom left.
-2. Sign out and sign in with **Developer/Test** AWS Account.
-3. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
-    - Command using CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
+1. Sign in with **Developer/Test** AWS Account.
+2. Store **Production AWS account ID**  using SSM Parameter Store via AWS CLI OR AWS Console.
+    1. Via AWS CLI, to verify you AWS Production Account ID: Run `aws --profile amplify-for-prod sts get-caller-identity`
+![AccountID](img/stsgetAccountID.png)
+    2. Run command using AWS CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
     - Replace **YourAWSAccountID** for your AWS Account ID.
-4. Edit buildspec-prod.yml | env > parameter-store with your keys created.
+3. Edit buildspec-prod.yml | env > parameter-store with your keys created.
 ```
 env:
   parameter-store:
     AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
     ENV: "amplifyEnvProd"
 ```
-5. Edit your buildspec-prod.yml referencing your environment variables from SSM.
-
-If you change any of the **buildspec-files**, commit and push. 
+4. If you change any of the **buildspec-files**, commit and push.
 
 ### Creating build with CodeBuild with ECR 
 
@@ -278,11 +276,15 @@ If you change any of the **buildspec-files**, commit and push.
     - Use the **buildspec-test.yml** for Amplify Test Environment.
     - Use the **buildspec-prod.yml** for Amplify Production Environment.
 6. Click **Create Build Project**.
+7. Do it for each environment - (dev, test and prod).
 
-**Grant Permission for each role created by codebuild**
+### Grant Permission for each role created by codebuild**
 
-1. Grant the right permissions for both CodeBuild roles have access to SSM.
+Grant the right permissions for all CodeBuild have access to SSM.
 
+1. Go to your codebuild and access dev codebuild project.
+    - Go to **Build details** and click in the **Service role** link. It`s going to open the IAM role associated with dev Build.
+    - Click **Attach policies**, search for **AmazonSSMReadOnlyAccess** policy managed by AWS or add this policy below.
 ```
 {
     "Version": "2012-10-17",
@@ -299,41 +301,29 @@ If you change any of the **buildspec-files**, commit and push.
     ]
 }
 ```
-
-2. Start the **development** build for testing purposes. 
+2. Do it for **test** and **prod** codebuilds.
+3. Start the **development** build for testing purposes. 
 
 If it runs with success, now it is time to create the production build.
 
 ### Cross Account Role - Configuring the production build permissions
 
-1. Sign in to Production Account via AWS Console.
-    - Create a IAM role with the right permissions to allow amplify create resources.
-2. Grant trust relationship using AWS Dev Acccount ID.
-    - Inside the role created.
-    - Click `Trust relationship`.
-    - Click `Edit trust relationship`.
-    - Use Dev AWS Account ID in the code below.
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::<AccountIDFromDevAcc>:root"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {}
-    }
-  ]
-}
-```
+**Creating a role for cross account**
 
-3. In **Developer Account** via AWS Console.
-    - Go to your codebuild and access the Production build project.
-    - Go to `Build details` and click in the `Service role` link.
-    - It`s going to open the IAM role associated with Production Build.
-    - Attach the code below:
+1. Sign in to **Production** Account via AWS Console.
+2. Access **IAM** > **Roles** > **Create role**.
+3. Click **Another AWS Account** and type **Developer/Test** Acccount ID.
+   1. Via AWS CLI, to verify you AWS Production Account ID: Run `aws --profile amplify-for-dev-test sts get-caller-identity`
+4. Grant the right permissions to allow amplify create resources.
+5. Create the role with name **CrossAccountRole**.
+
+**Assuming Role in Developer/Test Account**
+
+1. Sign in to **Developer/Test Account** via AWS Console.
+2. Go to your **Codebuild** and access the **Production** build project.
+3. Go to **Build details** and click in the **Service role** link.
+   - It`s going to open the IAM role associated with Production Build.
+4. Click **Inline Policy** and attach the code below:
 ```
 {
     "Version": "2012-10-17",
@@ -346,16 +336,14 @@ If it runs with success, now it is time to create the production build.
     ]
 }
 ```
-    - Change `<AccountIdProd>` to the AWS account ID from Production User Account.
-    - Change `CrossAccountRole` to the role name created at the beginning of this section.
+    - Change **<AccountIdProd>** to the AWS account ID from Production User Account.
+    - Change **CrossAccountRole** to the role name you created.
+5. Click **Review Policy** and create a name for it.
 
-// TODO
+**Testing production build**
 
-CHANGE THE ROLE NAME FROM build-spec prod.yml
-
-4. Start the **production** build.
-
-If everything worked well, it is time to create the Pipeline.
+1. Access **CodeBuild** projects and start the **production** build.
+![amplifyprodbuild](img/amplifyprodbuild.png)
 
 ### Create a Pipeline using AWS CodePipeline
 
@@ -364,14 +352,14 @@ For **development** pipeline:
 1. Go to AWS CodePipeline Service and create a pipeline.
     - Enter the pipeline name.
     - Use your source provider and access your repository.
-    - Use `dev` branch
-    - For build stage, use `AWS CodeBuild` and use your codebuild `developer` environment.
+    - Use **dev** branch
+    - For build stage, use **AWS CodeBuild** and use your codebuild **developer** environment.
 
 2. Edit this pipeline
-    - Click `Edit stage` in Edit:Source.
-    - Click `Add Action` Button.
+    - Click **Edit stage** in Edit:Source.
+    - Click **Add Action** Button.
     - Add the ECR Image referencing the image that was created.
-    - Click `Done`.
+    - Click **Done**.
     - Save it.
 
 For **test** pipeline:
@@ -379,14 +367,14 @@ For **test** pipeline:
 1. Go to AWS CodePipeline Service and create a pipeline.
     - Enter the pipeline name.
     - Use your source provider and access your repository.
-    - Use `test` branch
-    - For build stage, use `AWS CodeBuild` and use your codebuild `test` environment.
+    - Use **test** branch
+    - For build stage, use **AWS CodeBuild** and use your codebuild **test** environment.
 
 2. Edit this pipeline
-    - Click `Edit stage` in Edit:Source.
-    - Click `Add Action` Button.
+    - Click **Edit stage** in Edit:Source.
+    - Click **Add Action** Button.
     - Add the ECR Image referencing the image that was created.
-    - Click `Done`.
+    - Click **Done**.
     - Save it.
 
 For **production** pipeline:
@@ -394,19 +382,18 @@ For **production** pipeline:
 1. Go to AWS CodePipeline Service and create a pipeline:
     - Enter the pipeline name.
     - Use your source provider and access your repository.
-    - Use `master` branch.
-    - For build stage, use `AWS CodeBuild` and use your codebuild `production` environment.
+    - Use **master** branch.
+    - For build stage, use **AWS CodeBuild** and use your codebuild **production** environment.
 
 2. Edit this pipeline:
-    - Click `Edit stage` in Edit:Source.
-    - Click `Add Action` Button.
+    - Click **Edit stage** in Edit:Source.
+    - Click **Add Action** Button.
     - Add the ECR Image referencing the image that was created.
-    - Click `Done`.
+    - Click **Done**.
     - Save it.
 
 The pipeline should have two sources.
 ![Amplify45](img/amplify45.png)
-
 
 ## Setup CloudFront for Production Environment
 
