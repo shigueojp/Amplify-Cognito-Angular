@@ -255,13 +255,15 @@ If you change any of the **buildspec-files**, commit and push.
 
     2. Run command using AWS CLI: `aws ssm put-parameter --name "AmplifyAccountNumberProd" --type "String" --value "YourAWSAccountID"`
     - Replace **YourAWSAccountID** for your AWS Account ID.
-1. Edit buildspec-prod.yml | env > parameter-store with your keys created.
+3. Edit buildspec-prod.yml | env > parameter-store with your keys created.
+
 ```
 env:
   parameter-store:
     AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
     ENV: "amplifyEnvProd"
 ```
+
 4. If you change any of the **buildspec-files**, commit and push.
 
 ### Creating build with CodeBuild with ECR 
