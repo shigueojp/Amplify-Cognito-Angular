@@ -34,8 +34,8 @@ Furthermore, it`s using cross account simulating two AWS accounts: developer and
 ## Setup AWS Profile
 
 Create **two** IAM Users:
-    One simulating Developer/Test AWS Account.
-    Another simulating Production AWS Account.
+    - One simulating Developer/Test AWS Account.
+    - Another simulating Production AWS Account.
 
 
 1. Run in your terminal `amplify configure`.
@@ -44,9 +44,9 @@ Create **two** IAM Users:
    2. Specify the username of IAM user.
 3. Click in the link and register a new IAM user.
 4. Create a user with **AdministratorAccess** to your account to provision AWS resources for you like AppSync, Cognito etc.
-5. Once the user is created, Amplify CLI will ask you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
+5. Once the user is created, Amplify CLI requests you to provide the **accessKeyId** and the **secretAccessKey** to connect Amplify CLI with your newly created IAM user.
 6. Specify AWS Profile name for **amplify-for-dev-test**.
-![Amplify Configure](img/amplify_configure.png | width=100px])
+![AmplifyConfigure](img/amplify_configure.png | width=100px])
 7. Sign out from AWS Console.
    
 Sign in with **another** AWS Account. Repeat the process again to create a new IAM user. 
