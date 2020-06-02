@@ -111,8 +111,6 @@ In the next steps, we are going to create all the amplify resources from the dia
     - Make sure your bucket have the right access.
 13. Sign in.
 
-ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE ARRUMAR O FRONT-END NO STORAGE
-
 ### Creating Amplify Environment - Test 
 
 1. Run `git checkout -b test` to create test branch.
@@ -462,13 +460,11 @@ For some reason, you changed amplify configuration and want to return to the sam
 
 ## Cleaning Up all Your Resources
 
-1. Run `amplify delete` for deleting all amplify environment
-2. Access Amplify Console and delete the project.
+1. Run `amplify delete` for deleting all amplify environment locally.
+2. Access Amplify via AWS Console and delete the project.
 3. Delete all the s3 buckets related to amplify manually.
 4. Delete all the codebuild projects.
 5. Disable and delete the CloudFront Distribution.
-
-###Destroy The Service###
 
 ## Acknowledgments
 
