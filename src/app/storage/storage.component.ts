@@ -77,7 +77,10 @@ export class StorageComponent {
 
                 console.log(this.user)
             }
-        }).catch(err => console.log(err));
+        }).catch((err) => {
+            this.isLoading = false;
+            return console.log(err)
+        });
     }
 
     getType(): string {
@@ -87,6 +90,7 @@ export class StorageComponent {
     async onImageUploaded(e) {
         this.user.imageUrl = e.key;
         this.showPhoto = true;
+        this.updateProfile();
     }
 
     onAlbumImageSelected(event) {
