@@ -10,59 +10,58 @@
     </div>
 </div> -->
 <div class="spinner-border" role="status" *ngIf="isLoading">
-    <span class="sr-only">Loading...</span>
+  <span class="sr-only">Loading...</span>
 </div>
 
+<a class="alert alert-warning" *ngIf="!isLoading" [routerLink]="['/']">Return</a>
 
-<amplify-photo-picker *ngIf="!showPhoto && !isLoading" path="image" [storageOptions]="{'level': 'private'}"
-    (uploaded)="onImageUploaded($event)">
-</amplify-photo-picker>
+<div class="form-group d-flex  flex-column  file-upload mt-5 pt-5" *ngIf="!isLoading">
+  <form>
+    <amplify-photo-picker *ngIf="!showPhoto && !isLoading" path="image" [storageOptions]="{'level': 'private'}"
+      (uploaded)="onImageUploaded($event)">
+    </amplify-photo-picker>
 
-
-<div class="form-group d-flex justify-content-center file-upload pt-5" *ngIf="!isLoading">
-    <div class=" col-sm-6" *ngIf="showPhoto">
-        <div class="md-form mt-0">
-            <amplify-s3-image [path]="user.imageUrl" [options]="{'level': 'private'}" *ngIf="showPhoto">
-            </amplify-s3-image>
-        </div>
+    <div class="form-group col-sm-12" *ngIf="showPhoto">
+      <div class="md-form mt-0">
+        <amplify-s3-image [path]="user.imageUrl" [options]="{'level': 'private'}">
+        </amplify-s3-image>
+      </div>
     </div>
 
-    <form>
-        <div class="form-group row">
-            <label for="firstName" class="col-sm-4 col-form-label">First Name</label>
-            <div class="col-sm-7">
-                <div class="md-form mt-0">
-                    <input type="text" class="form-control" id="firstName" name="firstName"
-                        [(ngModel)]="user.firstName">
-                </div>
-            </div>
+    <div class="form-group row mt-10">
+      <label for="firstName" class="col-sm-4 col-form-label">First Name</label>
+      <div class="col-sm-7">
+        <div class="md-form mt-0">
+          <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="user.firstName">
         </div>
+      </div>
+    </div>
 
-        <div class="form-group row">
-            <label for="lastName" class="col-sm-4 col-form-label">Last Name</label>
-            <div class="col-sm-7">
-                <div class="md-form mt-0">
-                    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName">
-                </div>
-            </div>
+    <div class="form-group row">
+      <label for="lastName" class="col-sm-4 col-form-label">Last Name</label>
+      <div class="col-sm-7">
+        <div class="md-form mt-0">
+          <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName">
         </div>
+      </div>
+    </div>
 
-        <div class="form-group row">
-            <label for="aboutMe" class="col-sm-4 col-form-label">About Me</label>
-            <div class="col-sm-7">
-                <div class="md-form mt-0">
-                    <textarea id="aboutMe" name="aboutMe" [(ngModel)]="user.bio" class="form-control md-textarea"
-                        length="120" rows="3"></textarea>
-                </div>
-            </div>
+    <div class="form-group row">
+      <label for="aboutMe" class="col-sm-4 col-form-label">About Me</label>
+      <div class="col-sm-7">
+        <div class="md-form mt-0">
+          <textarea id="aboutMe" name="aboutMe" [(ngModel)]="user.bio" class="form-control md-textarea" length="120"
+            rows="3"></textarea>
         </div>
+      </div>
+    </div>
 
-        <div class="form-group row">
-            <div class="offset-4 col-sm-8">
-                <button type="submit" class="btn btn-primary btn-lg" (click)="updateProfile()">Update</button>
-            </div>
-        </div>
+    <div class="form-group row">
+      <div class="offset-4 col-sm-8">
+        <button type="submit" class="btn btn-primary btn-lg" (click)="updateProfile()">Update</button>
+      </div>
+    </div>
 
-        <div *ngIf="isUpdated" class="alert alert-success">Updated</div>
-    </form>
+    <div *ngIf="isUpdated" class="alert alert-success">Updated</div>
+  </form>
 </div>
