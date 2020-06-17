@@ -1,0 +1,24 @@
+{
+    "trigger": true,
+    "modules": [
+        "verification-link"
+    ],
+    "parentResource": "amplifyangular462f8301462f8301",
+    "functionName": "amplifyangular462f8301462f8301CustomMessage",
+    "resourceName": "amplifyangular462f8301462f8301CustomMessage",
+    "parentStack": "auth",
+    "triggerEnvs": [
+        {
+            "key": "RESOURCENAME",
+            "value": "resourceName"
+        }
+    ],
+    "triggerDir": "/usr/local/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/CustomMessage",
+    "triggerTemplate": "CustomMessage.json.ejs",
+    "roleName": "amplifyangular462f8301462f8301CustomMessage",
+    "skipEdit": true,
+    "REDIRECTURL": "http://localhost:4200/user/confirmation",
+    "EMAILSUBJECT": "Confirm your email address",
+    "EMAILMESSAGE": "Please confirm your email address. This helps keep your account secure by making sure important messages go to the right address.",
+    "RESOURCENAME": "resourceName"
+}
