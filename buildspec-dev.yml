@@ -12,8 +12,8 @@ phases:
     commands:
       - npm install
       - npm install -g @aws-amplify/cli
-      - npm install -g typescript && \
-      - npm install -g @angular/cli && \
+      - npm install -g typescript
+      - npm install -g @angular/cli
       - npm install -g @angular-devkit/build-angular"
   build:
     commands:
