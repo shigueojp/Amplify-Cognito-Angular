@@ -4,9 +4,8 @@ import * as CodePipeline from '@aws-cdk/aws-codepipeline'
 import * as CodePipelineAction from '@aws-cdk/aws-codepipeline-actions'
 import * as CodeBuild from '@aws-cdk/aws-codebuild'
 import * as IAM from '@aws-cdk/aws-iam'
-import * as ECR from '@aws-cdk/aws-ecr'
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
-import path = require('path');
+import * as CLOUDFRONT from '@aws-cdk/aws-cloudfront'
+import { RemovalPolicy } from '@aws-cdk/core';
 
 export interface ConfigProps extends cdk.StackProps {
   github: {
@@ -23,6 +22,7 @@ export class CdkStack extends cdk.Stack {
     const bucketHosting = new S3.Bucket(this, 'bucketHosting', {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
+      removalPolicy: RemovalPolicy.DESTROY,
     })
 
     // CodePipeline
@@ -48,11 +48,8 @@ export class CdkStack extends cdk.Stack {
     const codeBuildDev = new CodeBuild.PipelineProject(this, "BuildCDK", {
       buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-dev.yml'),
       role: role.withoutPolicyUpdates(),
-
       environment: {
-        buildImage: CodeBuild.LinuxBuildImage.fromAsset(this, 'Dockerfile', {
-          directory: path.join(__dirname, './'),
-        }),
+        buildImage: CodeBuild.LinuxBuildImage.AMAZON_LINUX_2
       },
     });
 
@@ -85,15 +82,6 @@ export class CdkStack extends cdk.Stack {
           trigger: CodePipelineAction.GitHubTrigger.WEBHOOK,
           branch: "dev"
         }),
-        new CodePipelineAction.GitHubSourceAction({
-          actionName: 'CheckoutMaster',
-          owner: props.github.owner,
-          repo: props.github.repository,
-          oauthToken: gitHubOAuthToken,
-          output: outputMasterSources,
-          trigger: CodePipelineAction.GitHubTrigger.WEBHOOK,
-          branch: "master"
-        })
       ]
     })
 
@@ -107,12 +95,6 @@ export class CdkStack extends cdk.Stack {
           input: outputDevSources,
           outputs: [outputDevWebsite],
         }),
-        new CodePipelineAction.CodeBuildAction({
-          actionName: 'WebsiteMaster',
-          project: codeBuildMaster,
-          input: outputMasterSources,
-          outputs: [outputMasterWebsite],
-        })
       ]
     })
 
@@ -122,15 +104,29 @@ export class CdkStack extends cdk.Stack {
       resources: ['*']
     }))
 
-    //  ECR PUSH
-    // const asset = new DockerImageAsset(this, 'MyBuildImage', {
-    //   directory: path.join(__dirname, '/')
-    // });
+    pipeline.addStage({
+      stageName: 'Deploy',
+      actions: [
+        new CodePipelineAction.S3DeployAction({
+          actionName: 'S3_Deploy',
+          bucket: bucketHosting,
+          input: outputDevWebsite,
+        }),
+      ]
+    })
 
-    // const repository = new ECR.Repository(this, 'GoldeImageCDK', {
-
-    // });
-
-
+    // Cloudfront pointing to S3
+    new CLOUDFRONT.CloudFrontWebDistribution(this, 'CloudFront', {
+      originConfigs: [
+        {
+          s3OriginSource: {
+            s3BucketSource: bucketHosting,
+          },
+          behaviors: [
+            { isDefaultBehavior: true }
+          ]
+        }
+      ]
+    });
   }
 }

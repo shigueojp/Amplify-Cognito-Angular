@@ -118,7 +118,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-amplifyangular-prod-155057-deployment",
+					"S3Bucket": "amplify-amplifyangular-dev-144927-deployment",
 					"S3Key": "amplify-builds/amplifyangular462f8301462f8301CustomMessage-596b467464376b4c7245-build.zip"
 				}
 			}
