@@ -32,8 +32,10 @@ export class CdkStack extends cdk.Stack {
     })
 
     // CodePipeline artifacts
-    const outputSources = new CodePipeline.Artifact();
-    const outputWebsite = new CodePipeline.Artifact();
+    const outputMasterSources = new CodePipeline.Artifact();
+    const outputDevSources = new CodePipeline.Artifact();
+    const outputDevWebsite = new CodePipeline.Artifact();
+    const outputMasterWebsite = new CodePipeline.Artifact();
 
     // Codebuild Role
     const role = new IAM.Role(this, 'Role', {
@@ -43,7 +45,7 @@ export class CdkStack extends cdk.Stack {
 
     // CodeBuild
     // Using DockerFile as buildImage
-    const codeBuild = new CodeBuild.PipelineProject(this, "LambdaBuild", {
+    const codeBuildDev = new CodeBuild.PipelineProject(this, "BuildCDK", {
       buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-dev.yml'),
       role: role.withoutPolicyUpdates(),
 
@@ -54,50 +56,62 @@ export class CdkStack extends cdk.Stack {
       },
     });
 
+    const codeBuildMaster = new CodeBuild.PipelineProject(this, "CodeBuildMaster", {
+      buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-prod.yml'),
+      role: role.withoutPolicyUpdates(),
+
+      // environment: {
+      //   buildImage: CodeBuild.LinuxBuildImage.fromAsset(this, 'Dockerfile', {
+      //     directory: path.join(__dirname, './'),
+      //   }),
+      // },
+    });
+
     // Token from github
     const gitHubOAuthToken = cdk.SecretValue.secretsManager('GitHubToken', {
       jsonField: 'GitHubToken',
     });
 
-    // Source from github
+    // Source from github dev
     pipeline.addStage({
       stageName: 'Source',
       actions: [
         new CodePipelineAction.GitHubSourceAction({
-          actionName: 'Checkout',
+          actionName: 'CheckoutDev',
           owner: props.github.owner,
           repo: props.github.repository,
           oauthToken: gitHubOAuthToken,
-          output: outputSources,
+          output: outputDevSources,
           trigger: CodePipelineAction.GitHubTrigger.WEBHOOK,
-        })
-      ]
-    })
-
-    pipeline.addStage({
-      stageName: 'Source',
-      actions: [
+          branch: "dev"
+        }),
         new CodePipelineAction.GitHubSourceAction({
-          actionName: 'Checkout',
+          actionName: 'CheckoutMaster',
           owner: props.github.owner,
           repo: props.github.repository,
           oauthToken: gitHubOAuthToken,
-          output: outputSources,
+          output: outputMasterSources,
           trigger: CodePipelineAction.GitHubTrigger.WEBHOOK,
-          branch: dev
+          branch: "master"
         })
       ]
     })
 
-    // Build
+    // Build Dev
     pipeline.addStage({
       stageName: 'Build',
       actions: [
         new CodePipelineAction.CodeBuildAction({
-          actionName: 'Website',
-          project: codeBuild,
-          input: outputSources,
-          outputs: [outputWebsite],
+          actionName: 'WebsiteDev',
+          project: codeBuildDev,
+          input: outputDevSources,
+          outputs: [outputDevWebsite],
+        }),
+        new CodePipelineAction.CodeBuildAction({
+          actionName: 'WebsiteMaster',
+          project: codeBuildMaster,
+          input: outputMasterSources,
+          outputs: [outputMasterWebsite],
         })
       ]
     })
