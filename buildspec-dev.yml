@@ -18,7 +18,7 @@ phases:
       - aws configure set aws_secret_access_key $SECRET_KEY
       - aws configure set default.region $AWS_REGION
       - sh ./amplifyPush.sh -e $ENV
-      - amplify publish
+      - ng build
       - echo Build finished on `date`
 artifacts:
   files:
