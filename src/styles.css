@@ -14,7 +14,7 @@ h2, p, label {
 
 /* Pegar a tela inteira em relação a altura */
 html, border-style, #root {
-  min-height: 100%
+  min-height: 100%;
 }
 
 /* Deixa as fontes mais bonitas */

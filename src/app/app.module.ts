@@ -10,6 +10,7 @@ import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AmplifyService, AmplifyAngularModule } from 'aws-amplify-angular';
 import { StorageComponent } from './storage/storage.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { StorageComponent } from './storage/storage.component';
     UserAuthenticationComponent,
     DashboardComponent,
     UserRegisteredComponent,
-    StorageComponent
+    StorageComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
