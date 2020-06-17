@@ -8,9 +8,13 @@ env:
 phases:
   install:
     runtime-versions:
-      nodejs: 12
+      nodejs: 10
     commands:
       - npm install
+      - npm install -g @aws-amplify/cli
+      - npm install -g typescript && \
+      - npm install -g @angular/cli && \
+      - npm install -g @angular-devkit/build-angular"
   build:
     commands:
       - echo Build started...

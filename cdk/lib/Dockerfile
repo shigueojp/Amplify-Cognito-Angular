@@ -1,4 +1,4 @@
-# Use the standard Amazon Linux base, provided by ECR/KaOS
+ç# Use the standard Amazon Linux base, provided by ECR/KaOS
 # It points to the standard shared Amazon Linux image, with a versioned tag.
 FROM amazonlinux:2
 LABEL Maintainer awsvs
