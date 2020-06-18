@@ -23,7 +23,7 @@ phases:
       - aws configure set aws_session_token $AWS_SESSION_TOKEN
       - sh ./amplifyPush.sh -s -e $ENV
       - amplify env list
-      - amplify publish
+      - ng build
       - echo Build finished on `date`
 artifacts:
   files:

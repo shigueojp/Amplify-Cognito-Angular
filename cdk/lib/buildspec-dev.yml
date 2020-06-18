@@ -20,6 +20,9 @@ phases:
       - sh ./amplifyPush.sh -e $ENV
       - ng build
       - echo Build finished on `date`
+  post_build:
+    commands:
+      - aws s3 sync ./dist $S3_BUCKET
 artifacts:
   files:
     - "**/*"

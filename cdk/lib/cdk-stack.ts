@@ -25,16 +25,23 @@ export class CdkStack extends cdk.Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     })
 
-    // CodePipeline
-    const pipeline = new CodePipeline.Pipeline(this, 'pipeline', {
-      pipelineName: 'Website',
+    // CodePipeline for dev env
+    const pipelineDev = new CodePipeline.Pipeline(this, 'pipeline', {
+      pipelineName: 'WebsiteDev',
       restartExecutionOnUpdate: true
     })
 
+    // CodePipeline for master env
+    // const pipelineMaster = new CodePipeline.Pipeline(this, 'pipeline', {
+    //   pipelineName: 'WebsiteMaster',
+    //   restartExecutionOnUpdate: true
+    // })
+
     // CodePipeline artifacts
-    const outputMasterSources = new CodePipeline.Artifact();
     const outputDevSources = new CodePipeline.Artifact();
     const outputDevWebsite = new CodePipeline.Artifact();
+
+    const outputMasterSources = new CodePipeline.Artifact();
     const outputMasterWebsite = new CodePipeline.Artifact();
 
     // Codebuild Role
@@ -43,8 +50,7 @@ export class CdkStack extends cdk.Stack {
       description: 'This is a custom role...',
     });
 
-    // CodeBuild
-    // Using DockerFile as buildImage
+    // CodeBuild for DEV ENV
     const codeBuildDev = new CodeBuild.PipelineProject(this, "BuildCDK", {
       buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-dev.yml'),
       role: role.withoutPolicyUpdates(),
@@ -53,16 +59,14 @@ export class CdkStack extends cdk.Stack {
       },
     });
 
-    const codeBuildMaster = new CodeBuild.PipelineProject(this, "CodeBuildMaster", {
-      buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-prod.yml'),
-      role: role.withoutPolicyUpdates(),
-
-      // environment: {
-      //   buildImage: CodeBuild.LinuxBuildImage.fromAsset(this, 'Dockerfile', {
-      //     directory: path.join(__dirname, './'),
-      //   }),
-      // },
-    });
+    // CodeBuild for PROD ENV
+    // const codeBuildMaster = new CodeBuild.PipelineProject(this, "CodeBuildMaster", {
+    //   buildSpec: CodeBuild.BuildSpec.fromSourceFilename('./buildspec-prod.yml'),
+    //   role: role.withoutPolicyUpdates(),
+    //   environment: {
+    //     buildImage: CodeBuild.LinuxBuildImage.AMAZON_LINUX_2
+    //   },
+    // });
 
     // Token from github
     const gitHubOAuthToken = cdk.SecretValue.secretsManager('GitHubToken', {
@@ -70,7 +74,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     // Source from github dev
-    pipeline.addStage({
+    pipelineDev.addStage({
       stageName: 'Source',
       actions: [
         new CodePipelineAction.GitHubSourceAction({
@@ -85,8 +89,24 @@ export class CdkStack extends cdk.Stack {
       ]
     })
 
+    // Source gitHubMaster
+    // pipelineMaster.addStage({
+    //   stageName: 'Source',
+    //   actions: [
+    //     new CodePipelineAction.GitHubSourceAction({
+    //       actionName: 'CheckoutMaster',
+    //       owner: props.github.owner,
+    //       repo: props.github.repository,
+    //       oauthToken: gitHubOAuthToken,
+    //       output: outputDevSources,
+    //       trigger: CodePipelineAction.GitHubTrigger.WEBHOOK,
+    //       branch: "master"
+    //     }),
+    //   ]
+    // })
+
     // Build Dev
-    pipeline.addStage({
+    pipelineDev.addStage({
       stageName: 'Build',
       actions: [
         new CodePipelineAction.CodeBuildAction({
@@ -94,9 +114,25 @@ export class CdkStack extends cdk.Stack {
           project: codeBuildDev,
           input: outputDevSources,
           outputs: [outputDevWebsite],
+          environmentVariables: {
+            $S3_BUCKET => bucketHosting.s3UrlForObject,
+          }
         }),
       ]
     })
+
+    // Build Master
+    // pipelineMaster.addStage({
+    //   stageName: 'Build',
+    //   actions: [
+    //     new CodePipelineAction.CodeBuildAction({
+    //       actionName: 'WebsiteMaster',
+    //       project: codeBuildMaster,
+    //       input: outputMasterSources,
+    //       outputs: [outputMasterWebsite],
+    //     }),
+    //   ]
+    // })
 
     // Granting Permissions
     role.addToPolicy(new IAM.PolicyStatement({
@@ -104,23 +140,43 @@ export class CdkStack extends cdk.Stack {
       resources: ['*']
     }))
 
-    pipeline.addStage({
-      stageName: 'Deploy',
-      actions: [
-        new CodePipelineAction.S3DeployAction({
-          actionName: 'S3_Deploy',
-          bucket: bucketHosting,
-          input: outputDevWebsite,
-        }),
-      ]
-    })
+    // // Deploy spa to s3 for DEV ENV
+    // pipelineDev.addStage({
+    //   stageName: 'Deploy',
+    //   actions: [
+    //     new CodePipelineAction.S3DeployAction({
+    //       actionName: 'S3_Deploy',
+    //       bucket: bucketHosting,
+    //       input: outputDevWebsite,
+    //     }),
+    //   ]
+    // })
+
+    // // Deploy spa to s3 for Master ENV
+    // pipelineMaster.addStage({
+    //   stageName: 'Deploy',
+    //   actions: [
+    //     new CodePipelineAction.S3DeployAction({
+    //       actionName: 'S3_Deploy',
+    //       bucket: bucketHosting,
+    //       input: outputDevWebsite,
+    //     }),
+    //   ]
+    // })
+
+    // Creating OAI for DEV ENV
+    const oai = new CLOUDFRONT.OriginAccessIdentity(this, 'OAI');
+
+    // Granting OAI Permissions to read Bucket
+    bucketHosting.grantRead(oai);
 
     // Cloudfront pointing to S3
-    new CLOUDFRONT.CloudFrontWebDistribution(this, 'CloudFront', {
+    const cloudfront = new CLOUDFRONT.CloudFrontWebDistribution(this, 'CloudFront', {
       originConfigs: [
         {
           s3OriginSource: {
             s3BucketSource: bucketHosting,
+            originAccessIdentity: oai
           },
           behaviors: [
             { isDefaultBehavior: true }
