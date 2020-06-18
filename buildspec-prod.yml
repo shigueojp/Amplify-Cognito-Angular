@@ -24,7 +24,7 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - aws configure set default.region $AWS_REGION
       - aws configure set aws_session_token $AWS_SESSION_TOKEN
-      - sh ./amplifyPush.sh -s -e $AmplifyEnvProd
+      - sh ./amplifyPush.sh -e $AmplifyEnvProd
       - ng build
       - echo Build finished on `date`
   post_build:
