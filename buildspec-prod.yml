@@ -9,6 +9,10 @@ phases:
       nodejs: 10
     commands:
       - npm install
+      - npm install -g @aws-amplify/cli
+      - npm install -g typescript
+      - npm install -g @angular/cli
+      - npm install -g @angular-devkit/build-angular
   build:
     commands:
       - echo Build started...
@@ -21,8 +25,7 @@ phases:
       - aws configure set default.region $AWS_REGION
       - aws configure set aws_session_token $AWS_SESSION_TOKEN
       - sh ./amplifyPush.sh -s -e $AmplifyEnvProd
-      - amplify env list
-      - amplify publish
+      - ng build
       - echo Build finished on `date`
   post_build:
     commands:
