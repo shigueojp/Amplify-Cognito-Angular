@@ -6,6 +6,8 @@ import * as CodeBuild from '@aws-cdk/aws-codebuild'
 import * as IAM from '@aws-cdk/aws-iam'
 import * as CLOUDFRONT from '@aws-cdk/aws-cloudfront'
 import { RemovalPolicy } from '@aws-cdk/core';
+import { BuildEnvironmentVariableType } from '@aws-cdk/aws-codebuild';
+
 
 export interface ConfigProps extends cdk.StackProps {
   github: {
@@ -115,7 +117,10 @@ export class CdkStack extends cdk.Stack {
           input: outputDevSources,
           outputs: [outputDevWebsite],
           environmentVariables: {
-            $S3_BUCKET => bucketHosting.s3UrlForObject,
+            S3_BUCKET: {
+              type: BuildEnvironmentVariableType.PLAINTEXT,
+              value: bucketHosting.s3UrlForObject()
+            }
           }
         }),
       ]
