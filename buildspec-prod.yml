@@ -3,7 +3,6 @@ version: 0.2
 env:
   parameter-store:
     AMPLIFY_ACCOUNT_NUMBER_PROD: "AmplifyAccountNumberProd"
-    ENV: "amplifyEnvProd"
 phases:
   install:
     runtime-versions:
@@ -21,7 +20,7 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - aws configure set default.region $AWS_REGION
       - aws configure set aws_session_token $AWS_SESSION_TOKEN
-      - sh ./amplifyPush.sh -s -e $ENV
+      - sh ./amplifyPush.sh -s -e $AmplifyEnvProd
       - amplify env list
       - amplify publish
       - echo Build finished on `date`

@@ -3,6 +3,7 @@ export const config = {
     owner: 'shigueojp',
     repository: 'Amplify-Cognito-Angular',
   },
-  env: { region: 'us-east-1' }
+  env: { region: 'us-east-1' },
+  AmplifyEnvProd: 'prod',
 }
 

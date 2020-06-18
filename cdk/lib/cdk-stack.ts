@@ -13,7 +13,8 @@ export interface ConfigProps extends cdk.StackProps {
   github: {
     owner: string,
     repository: string,
-  }
+  },
+  AmplifyEnvProd: string
 }
 
 export class CdkStack extends cdk.Stack {
@@ -120,6 +121,9 @@ export class CdkStack extends cdk.Stack {
             S3_BUCKET: {
               type: BuildEnvironmentVariableType.PLAINTEXT,
               value: bucketHosting.s3UrlForObject()
+            },
+            AmplifyEnvProd: {
+              value: props.AmplifyEnvProd
             }
           }
         }),
