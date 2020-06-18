@@ -121,9 +121,6 @@ export class CdkStack extends cdk.Stack {
             S3_BUCKET: {
               type: BuildEnvironmentVariableType.PLAINTEXT,
               value: bucketHosting.s3UrlForObject()
-            },
-            AmplifyEnvProd: {
-              value: props.AmplifyEnvProd
             }
           }
         }),
@@ -143,6 +140,9 @@ export class CdkStack extends cdk.Stack {
             S3_BUCKET: {
               type: BuildEnvironmentVariableType.PLAINTEXT,
               value: 's3://hosting-prod-amplify-test-323232'
+            },
+            AmplifyEnvProd: {
+              value: props.AmplifyEnvProd
             }
           }
         }),
