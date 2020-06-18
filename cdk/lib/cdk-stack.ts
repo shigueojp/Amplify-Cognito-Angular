@@ -143,7 +143,7 @@ export class CdkStack extends cdk.Stack {
             },
             AmplifyEnvProd: {
               value: props.AmplifyEnvProd
-            }
+            },
           }
         }),
       ]
