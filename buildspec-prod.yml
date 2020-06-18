@@ -25,6 +25,9 @@ phases:
       - amplify env list
       - amplify publish
       - echo Build finished on `date`
+  post_build:
+    commands:
+      - aws s3 sync ./dist $S3_BUCKET
 artifacts:
   files:
     - "**/*"
