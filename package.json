@@ -27,7 +27,7 @@
     "@aws-amplify/ui-angular": "^0.2.4",
     "@ckeditor/ckeditor5-angular": "^1.1.2",
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
-    "@ckeditor/ckeditor5-image": "^16.0.0",
+    "@ckeditor/ckeditor5-image": "^27.0.0",
     "angular-formio": "^4.5.9",
     "angular-gridster2": "^9.1.0",
     "aws-amplify": "^3.0.7",
